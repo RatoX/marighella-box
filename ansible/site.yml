@@ -1,0 +1,11 @@
+# site.yml
+---
+- hosts: all
+  user: name=ratox shell=/bin/bash groups=admins,sudo,developers append=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/ratox_user
+  become: True
+  roles:
+    - ansible-ssh-hardening
+    - ansible-os-hardening
+- include: node/main.yml
+- include: applications/main.yml
+- include: upstart-node/main.yml
