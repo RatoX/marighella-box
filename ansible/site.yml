@@ -1,11 +1,22 @@
 # site.yml
 ---
 - hosts: all
-  user: name=ratox shell=/bin/bash groups=admins,sudo,developers append=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/ratox_user
+  vars_files:
+    - vars.yml
   become: True
+  tasks:
+  - name: Install required system packages.
+    apt: pkg={{ item }} state=installed update-cache=yes
+    with_items: "{{ system_packages }}"
+
+  - name: Create ratox user :P
+    user: name=ratox shell=/bin/bash groups=sudo append=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/ratox_user
+
   roles:
-    - ansible-ssh-hardening
-    - ansible-os-hardening
+    - { role: ansible-ssh-hardening, sudo: True }
+    - { role: ansible-os-hardening, sudo: True }
+    - { role: rvm_io.rvm1-ruby, tags: ruby, sudo: True }
+
 - include: node/main.yml
 - include: applications/main.yml
 - include: upstart-node/main.yml

@@ -1,14 +1,5 @@
 #VERSION: 0.0.2
 
 ---
-- hosts: all
-  sudo: yes
-  vars:
-    service: 'simple'
-  tasks:
-  - name: create folder app
-    file: path=/var/www/{{ service }} state=directory owner=www-data group=www-data mode=0775 recurse=yes
-  - name: install simple app
-    template: src=simple/index.js.j2 dest=/var/www/{{ service }}/index.js backup=yes mode=0644
-  - name: Install node.js package.
-    npm: name=http-server path=/var/www/{{ service }}
+- include: jekyll/main.yml
+- include: simple/main.yml
