@@ -4,3 +4,4 @@ rvm1_rubies:
 system_packages:
   - build-essential
   - git
+nodejs_version: "4.x"

@@ -1,5 +1,17 @@
-#VERSION: 0.0.2
-
+# main.yml
 ---
-- include: jekyll/main.yml
-- include: simple/main.yml
+- hosts: all
+  become: True
+  vars:
+    app_dir: '/var/apps/'
+  tasks:
+  - name: Create the project directory.
+    file: state=directory path={{ app_dir }} recurse=yes mode=0644
+
+  - name: checkout git project
+    git: repo='{{ item.git_url }}' dest='{{ app_dir }}{{ item.name }}' force=yes
+    with_items:
+      - { git_url: 'https://github.com/movimento-sem-terra/site-novo', name: 'jekyll-site' }
+
+  - name: install bundler
+    gem: name=bundler state=latest user_install=no
