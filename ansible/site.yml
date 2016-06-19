@@ -10,7 +10,7 @@
     with_items: "{{ system_packages }}"
 
   - name: Create ratox user :P
-    user: name=ratox shell=/bin/bash groups=sudo append=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/ratox_user
+    user: name=ratox shell=/bin/bash groups=sudo,www-data,rvm,ssh append=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/ratox_user
 
   - name: Set up authorized_keys for the ratox user
     authorized_key: user=ratox key="{{ item }}"

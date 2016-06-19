@@ -2,16 +2,21 @@
 ---
 - hosts: all
   become: True
+  become_user: ratox
   vars:
-    app_dir: '/var/apps/'
+    app_dir: '~'
   tasks:
+
   - name: Create the project directory.
-    file: state=directory path={{ app_dir }} recurse=yes mode=0644
+    file: state=directory path={{ app_dir }} recurse=yes mode="u=rwx,g=rw,o=r" owner=ratox group=www-data
 
   - name: checkout git project
-    git: repo='{{ item.git_url }}' dest='{{ app_dir }}{{ item.name }}' force=yes
+    git: repo='{{ item.git_url }}' dest='{{ app_dir }}/{{ item.name }}' force=yes
     with_items:
       - { git_url: 'https://github.com/movimento-sem-terra/site-novo', name: 'jekyll-site' }
 
-  - name: install bundler
-    gem: name=bundler state=latest user_install=no
+  - name: Rvm set defaults
+    shell: 'bash -lc "rvm use 2.1.5 --default"'
+
+  - name: Run bundle
+    bundler: state=present chdir='{{ app_dir }}/jekyll-site'

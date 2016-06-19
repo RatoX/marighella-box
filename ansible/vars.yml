@@ -1,6 +1,7 @@
 ---
 rvm1_rubies:
   - 'ruby-2.2.2'
+  - 'ruby-2.1.5'
 system_packages:
   - build-essential
   - git
