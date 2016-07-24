@@ -27,20 +27,11 @@
     with_file:
       - files/ratox
 
-  - name: Set permissions home
-    file: path=/home/ratox mode=0700
-
-  - name: Set permissions ssh
-    file: path=/home/ratox/.ssh mode=0700
-
-  - name: Set permissions authorized_keys
-    file: path=/home/ratox/.ssh/authorized_keys mode=0600
-
-
   roles:
     - { role: ansible-ssh-hardening, sudo: True }
     - { role: ansible-os-hardening, sudo: True }
     - { role: rvm_io.rvm1-ruby, tags: ruby, sudo: True }
     - { role: geerlingguy.nodejs, tags: node }
+    - { role: greendayonfire.mongodb }
 
 - include: applications/main.yml

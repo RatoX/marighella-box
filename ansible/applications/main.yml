@@ -8,10 +8,10 @@
   tasks:
 
   - name: Create the project directory.
-    file: state=directory path={{ app_dir }} recurse=yes mode="u=rwx,g=rw,o=r" owner=ratox group=www-data
+    file: state=directory path={{ app_dir }} recurse=yes mode="u=rwx,g=rx,o=rx" owner=ratox group=www-data
 
   - name: checkout git project
-    git: repo='{{ item.git_url }}' dest='{{ app_dir }}/{{ item.name }}' force=yes
+    git: repo='{{ item.git_url }}' dest='{{ app_dir }}/{{ item.name }}' force=yes depth=1
     with_items:
       - { git_url: 'https://github.com/movimento-sem-terra/site-novo', name: 'jekyll-site' }
 
