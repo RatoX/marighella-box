@@ -9,10 +9,15 @@ export ANSIBLE_SCP_IF_SSH=y
 #To run on DEV
 1) Create the user first
 
+```
 ansible-playbook -i dev user.yml --vault-password-file=~/.ssh/vault_password_file --private-key=~/.ssh/id_rsa
+```
 
-2) Install the app
+2) Install the tools
 
+```
+ansible-playbook -i dev tools.yml --vault-password-file=~/.ssh/vault_password_file --private-key=~/.ssh/id_rsa
+```
 3) Test!
 
 4) Hardning it!
