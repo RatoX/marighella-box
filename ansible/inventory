@@ -1,2 +1,5 @@
+[dev]
+dev.marighella.io
+
 [prod]
-64.137.233.29 ansible_user=root
+64.137.201.183 ansible_user=ratox

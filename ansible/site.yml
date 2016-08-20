@@ -10,26 +10,7 @@
     apt: pkg={{ item }} state=installed update-cache=yes
     with_items: "{{ system_packages }}"
 
-  - name: Create ratox user :P
-    user:
-      name: ratox
-      groups: sudo,www-data,rvm,ssh
-      append: yes
-      generate_ssh_key: yes
-      ssh_key_bits: 4096
-      ssh_key_file: .ssh/ratox_user
-      password: "{{ user_pass }}"
-      shell: /bin/bash
-      update_password: on_create
-
-  - name: Set up authorized_keys for the ratox user
-    authorized_key: user=ratox key="{{ item }}" manage_dir=no
-    with_file:
-      - files/ratox
-
   roles:
-    - { role: ansible-ssh-hardening, sudo: True }
-    - { role: ansible-os-hardening, sudo: True }
     - { role: rvm_io.rvm1-ruby, tags: ruby, sudo: True }
     - { role: geerlingguy.nodejs, tags: node }
     - { role: greendayonfire.mongodb }
