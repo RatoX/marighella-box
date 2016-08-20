@@ -5,6 +5,8 @@
     - files/vars.yml
     - files/env.yml
   become: True
+  vars:
+  - ansible_ssh_user: ratox
   tasks:
   - name: Install required system packages.
     apt: pkg={{ item }} state=installed update-cache=yes
