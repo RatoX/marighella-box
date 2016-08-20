@@ -23,3 +23,21 @@
     authorized_key: user=ratox key="{{ item }}" manage_dir=no
     with_file:
       - files/ratox
+
+  - name: Make sure we have a 'wheel' group
+    group:
+      name: wheel
+      state: present
+
+  - name: Allow 'wheel' group to have passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+  - name: Add ratox to wheel group
+    user:
+      name: "ratox"
+      groups: wheel
+      append: yes
