@@ -19,9 +19,9 @@
     shell: 'bash -lc "rvm use 2.1.5 --default"'
 
   - name: Run bundle
-    bundler: state=present chdir='{{ app_dir }}/jekyll-site'
+    bundler: state=present chdir='{{ app_dir }}/jekyll-site' gem_path="~/.gem"
 
   - name: Setup application
-    shell: setup
+    shell: ./setup
     args:
       chdir: '{{ app_dir }}/jekyll-site/'

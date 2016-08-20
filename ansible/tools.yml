@@ -4,7 +4,7 @@
   vars_files:
     - files/vars.yml
     - files/env.yml
-  become: True
+  become: yes
   vars:
   - ansible_ssh_user: ratox
   tasks:
@@ -13,8 +13,8 @@
     with_items: "{{ system_packages }}"
 
   roles:
-    - { role: rvm_io.rvm1-ruby, tags: ruby, sudo: True }
-    - { role: geerlingguy.nodejs, tags: node }
-    - { role: greendayonfire.mongodb }
+    - { role: rvm_io.rvm1-ruby, tags: ruby, become: yes }
+    - { role: geerlingguy.nodejs, tags: node, become: yes }
+    - { role: greendayonfire.mongodb, become: yes }
 
 - include: applications/main.yml
