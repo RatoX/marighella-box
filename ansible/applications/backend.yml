@@ -25,7 +25,9 @@
     npm: path={{ backend_dir }} production=no
 
   - name: run the tests
-    script: {{ backend_dir }}/node_modules/jasmine/bin/jasmine.js
+    shell: "./node_modules/jasmine/bin/jasmine.js"
+    args:
+      chdir: "{{ backend_dir }}"
 
   - name: run npm install to dev
     npm: path={{ backend_dir }} production=no
