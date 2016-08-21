@@ -12,22 +12,16 @@
     with_items:
       - { git_url: 'https://github.com/marighella/backend' }
 
-  - name: run npm install
-    npm: path={{ backend_dir }}
+  - name: run npm install to production
+    npm: path={{ backend_dir }} production=yes
 
-- hosts: dev
-  become: yes
-  become_user: ratox
-  vars:
-  - backend_dir: ~/backend
-  tasks:
   - name: run npm install to dev
     npm: path={{ backend_dir }} production=no
+    when: "'dev' in group_names"
 
   - name: run the tests
     shell: "./node_modules/jasmine/bin/jasmine.js"
+    when: "'dev' in group_names"
     args:
       chdir: "{{ backend_dir }}"
 
-  - name: run npm install to dev
-    npm: path={{ backend_dir }} production=no
