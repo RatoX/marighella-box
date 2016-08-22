@@ -12,12 +12,13 @@
     with_items:
       - { git_url: 'https://github.com/marighella/backend' }
 
-  - name: run npm install to production
-    npm: path={{ backend_dir }} production=yes
-
   - name: run npm install to dev
     npm: path={{ backend_dir }} production=no
     when: "'dev' in group_names"
+
+  - name: run npm install to production
+    npm: path={{ backend_dir }} production=yes
+    when: "'dev' not in group_names"
 
   - name: run the tests
     shell: "./node_modules/jasmine/bin/jasmine.js"
@@ -25,3 +26,16 @@
     args:
       chdir: "{{ backend_dir }}"
 
+  - name: "Install forever (to run Node.js app)."
+    npm: name=forever global=yes state=present
+    become: yes
+    become_user: root
+
+  - name: "Check list of Node.js apps running."
+    command: forever list
+    register: forever_list
+    changed_when: false
+
+  - name: "Start backend.js app."
+    command: forever start -w --watchDirectory "{{ backend_dir }}" "{{ backend_dir }}/index.js"
+    when: "forever_list.stdout.find('{{ backend_dir }}/index.js') == -1"
