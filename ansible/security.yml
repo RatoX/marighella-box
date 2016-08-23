@@ -3,6 +3,7 @@
 - hosts: all
   vars_files:
     - files/vars.yml
+    - files/env.yml
   become: True
   roles:
     - { role: ansible-ssh-hardening, sudo: True }
