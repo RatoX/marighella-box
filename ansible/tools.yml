@@ -13,7 +13,6 @@
     with_items: "{{ system_packages }}"
 
   roles:
-    - { role: rvm_io.rvm1-ruby, tags: ruby, become: yes }
     - { role: geerlingguy.nodejs, tags: node, become: yes }
     - { role: greendayonfire.mongodb, become: yes }
 
