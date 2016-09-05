@@ -5,4 +5,5 @@ rvm1_rubies:
 system_packages:
   - build-essential
   - git
+  - nginx
 nodejs_version: "6.x"

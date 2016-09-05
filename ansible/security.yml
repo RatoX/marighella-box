@@ -8,3 +8,4 @@
   roles:
     - { role: ansible-ssh-hardening, sudo: True }
     - { role: ansible-os-hardening, sudo: True }
+    - { role: ansible-nginx-hardening, sudo: True }

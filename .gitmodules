@@ -1,0 +1,6 @@
+[submodule "ansible/roles/ansible-role-nginx"]
+	path = ansible/roles/ansible-role-nginx
+	url = https://github.com/jdauphant/ansible-role-nginx
+[submodule "ansible/roles/ansible-nginx-hardening"]
+	path = ansible/roles/ansible-nginx-hardening
+	url = https://github.com/dev-sec/ansible-nginx-hardening
