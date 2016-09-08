@@ -26,11 +26,6 @@
     args:
       chdir: "{{ backend_dir }}"
 
-  - name: "Install forever (to run Node.js app)."
-    npm: name=forever global=yes state=present
-    become: yes
-    become_user: root
-
   - name: "Check list of Node.js apps running."
     command: forever list
     register: forever_list

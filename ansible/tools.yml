@@ -5,15 +5,37 @@
     - files/vars.yml
     - files/env.yml
   become: yes
+  become_user: root
   vars:
   - ansible_ssh_user: ratox
   tasks:
   - name: Install required system packages.
-    apt: pkg={{ item }} state=installed update-cache=yes
+    apt: pkg={{ item }} state=latest update-cache=yes
     with_items: "{{ system_packages }}"
 
-  roles:
-    - { role: geerlingguy.nodejs, tags: node, become: yes }
-    - { role: greendayonfire.mongodb, become: yes }
+  - name: Install  python packages
+    pip: name={{ item }}
+    with_items: "{{ python_packages }}"
 
-- include: applications/main.yml
+- hosts: all
+  roles:
+    - role: geerlingguy.nodejs
+      become: yes
+      become_user: root
+    - role: greendayonfire.mongodb
+      become: yes
+
+- hosts: all
+  tasks:
+  - name: "Install forever (to run Node.js app)."
+    npm: name=forever global=yes state=present
+
+  - name: Install Bower and Grunt
+    npm: name={{ item }} state=present global=yes
+    become_user: ratox
+    with_items:
+    - bower
+    - grunt-cli
+
+
+- include: applications/backend.yml
