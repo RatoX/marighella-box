@@ -36,4 +36,5 @@
     npm: name={{ item }} state=present global=yes
     with_items:
     - bower
+    - grunt
     - grunt-cli
