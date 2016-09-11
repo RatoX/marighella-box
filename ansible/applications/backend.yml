@@ -20,12 +20,6 @@
     npm: path={{ backend_dir }} production=yes
     when: "'dev' not in group_names"
 
-  - name: run the tests
-    shell: "./node_modules/jasmine/bin/jasmine.js"
-    when: "'dev' in group_names"
-    args:
-      chdir: "{{ backend_dir }}"
-
   - name: "Check list of Node.js apps running."
     command: forever list
     register: forever_list
