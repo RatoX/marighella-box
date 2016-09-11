@@ -18,24 +18,22 @@
     with_items: "{{ python_packages }}"
 
 - hosts: all
+  become: yes
+  vars_files:
+    - files/vars.yml
+    - files/env.yml
   roles:
     - role: geerlingguy.nodejs
-      become: yes
-      become_user: root
     - role: greendayonfire.mongodb
-      become: yes
 
 - hosts: all
+  become: yes
   tasks:
   - name: "Install forever (to run Node.js app)."
     npm: name=forever global=yes state=present
 
   - name: Install Bower and Grunt
     npm: name={{ item }} state=present global=yes
-    become_user: ratox
     with_items:
     - bower
     - grunt-cli
-
-
-- include: applications/backend.yml
