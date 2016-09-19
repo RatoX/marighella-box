@@ -1,0 +1,21 @@
+# frontend.yml
+---
+- hosts: all
+  become: yes
+  roles:
+  - role: jdauphant.ssl-certs
+    ssl_certs_generate_dh_param: true
+  - role: ansible-role-nginx
+    nginx_configs:
+       ssl:
+         - ssl_certificate_key {{ssl_certs_privkey_path}}
+         - ssl_certificate     {{ssl_certs_cert_path}}
+    nginx_sites:
+       default:
+         - listen 80
+         - server_name *.marighella.io
+         - return 301 https://$host$request_uri
+       cms:
+         - listen 443 ssl
+         - server_name *.marighella.io
+         - root /home/ratox/frontend
