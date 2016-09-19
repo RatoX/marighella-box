@@ -6,7 +6,7 @@
   - name: Permission to read
     file:
       path: /etc/ssl/marighella
-      mode: u=rwX,g=r
+      mode: u=rw,g=r
       recurse: yes
   roles:
   - role: jdauphant.ssl-certs
@@ -19,10 +19,11 @@
          - ssl_certificate     {{ssl_certs_cert_path}}
     nginx_sites:
        default:
-         - listen 80
-         - server_name *.marighella.io
-         - return 301 https://$host$request_uri
+         - listen [::]:80
+         - return 301 https://$host$request_uri;
        cms:
          - listen 443 ssl
+         - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
          - server_name *.marighella.io
+         - add_header Strict-Transport-Security "max-age=31536000"
          - root /home/ratox/frontend
