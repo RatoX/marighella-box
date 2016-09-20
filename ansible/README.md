@@ -25,15 +25,10 @@ Adding this flag to use the private key
 ```
 
 
-2) Install the tools
+2) Order to install
 
-```
-ansible-playbook -i dev tools.yml --vault-password-file=~/.ssh/vault_password_file
-```
-3) Test!
-
-4) Hardning it!
-```
-ansible-playbook -i dev security.yml --vault-password-file=~/.ssh/vault_password_file
-```
-
+- user.yml  "Add ratox user
+- tools.yml "We need tools
+- application/backend.yml "Install backend project
+- nginx.yml "Setup a nginx server
+- security.yml "Hardening the server
