@@ -8,6 +8,13 @@
       path: /etc/ssl/marighella
       mode: u=rwX,g=r
       recurse: yes
+  - name: Ensure frontend folder exists
+    file:
+      path: /var/www
+      state: directory
+      owner: www-data
+      group: www-data
+      mode: u=rwX,g=rwX,o=r
   roles:
   - role: jdauphant.ssl-certs
     ssl_certs_generate_dh_param: true
