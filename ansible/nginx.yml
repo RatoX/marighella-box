@@ -24,6 +24,7 @@
        ssl:
          - ssl_certificate_key "/etc/ssl/marighella/marighella.key"
          - ssl_certificate     "/etc/ssl/marighella/marighella.pem"
+         - ssl_dhparam         "/etc/ssl/marighella/dhparam.pem"
     nginx_sites:
        default:
          - listen 80 default_server
