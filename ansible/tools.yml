@@ -38,3 +38,13 @@
     - bower
     - grunt
     - grunt-cli
+
+- hosts: all
+  become: yes
+  roles:
+    - {
+        role: rvm_io.ruby,
+        tags: ruby,
+        rvm1_rubies: ['ruby-2.3.3'],
+        rvm1_user: 'ratox'
+      }

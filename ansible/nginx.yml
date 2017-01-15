@@ -6,7 +6,7 @@
   - name: Permission to read
     file:
       path: /etc/ssl/marighella
-      mode: u=rwX,g=r
+      mode: u=rwX,g=rX
       recurse: yes
   - name: Ensure frontend folder exists
     file:
