@@ -24,6 +24,7 @@
     - files/env.yml
   roles:
     - role: geerlingguy.nodejs
+      nodejs_version: '7.4.0'
     - role: greendayonfire.mongodb
 
 - hosts: all
