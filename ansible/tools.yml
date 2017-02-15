@@ -1,16 +1,21 @@
 # site.yml
 ---
 - hosts: all
+  name: "Update all packages"
+  become: yes
+  tasks:
+  - apt:
+      upgrade: safe
+
+- hosts: all
   vars_files:
     - files/vars.yml
     - files/env.yml
   become: yes
   become_user: root
-  vars:
-  - ansible_ssh_user: ratox
   tasks:
   - name: Install required system packages.
-    apt: pkg={{ item }} state=latest update-cache=yes
+    apt: pkg={{ item }} state=latest
     with_items: "{{ system_packages }}"
 
   - name: Install  python packages
