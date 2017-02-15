@@ -5,7 +5,6 @@ rvm1_rubies:
 system_packages:
   - build-essential
   - git
-  - nginx
   - python-pip
 python_packages:
   - urllib3

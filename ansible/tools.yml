@@ -24,6 +24,16 @@
 
 - hosts: all
   become: yes
+  tasks:
+  - name: Add PPA to nginx
+    apt_repository:
+      repo: 'ppa:nginx/stable'
+  - name: Install nginx stable
+    apt: pkg=nginx state=latest
+
+
+- hosts: all
+  become: yes
   vars_files:
     - files/vars.yml
     - files/env.yml
