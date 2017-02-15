@@ -15,6 +15,13 @@
       owner: www-data
       group: www-data
       mode: u=rwX,g=rwX,o=r
+  - name: Create index html
+    template:
+      src: index.j2
+      dest: /var/www/index.html
+      owner: www-data
+      group: www-data
+
   roles:
   - role: jdauphant.ssl-certs
     ssl_certs_generate_dh_param: true
@@ -27,11 +34,11 @@
          - ssl_dhparam         "/etc/ssl/marighella/dhparam.pem"
     nginx_sites:
        default:
-         - listen 80 default_server
-         - listen [::]:80 default_server
+         - listen 80
+         - listen [::]:80
          - return 301 https://$host$request_uri
        cms:
-         - listen 443 ssl
+         - listen 443 ssl http2 default_server
          - server_name *.marighella.io
          - root /var/www
          - gzip on
