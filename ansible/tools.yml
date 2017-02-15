@@ -27,9 +27,12 @@
   vars_files:
     - files/vars.yml
     - files/env.yml
+  tasks:
+    - name: Configure repository
+      shell: curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+    - name: Install node 7
+      apt: pkg=nodejs state=latest
   roles:
-    - role: geerlingguy.nodejs
-      nodejs_version: '7.4.0'
     - role: greendayonfire.mongodb
 
 - hosts: all
