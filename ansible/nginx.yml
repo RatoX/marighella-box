@@ -34,7 +34,6 @@
          - ssl_dhparam         "/etc/ssl/marighella/dhparam.pem"
     nginx_sites:
        default:
-         - listen 80
          - listen [::]:80
          - return 301 https://$host$request_uri
        cms:
