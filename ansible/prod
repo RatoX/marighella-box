@@ -1,2 +1,2 @@
 [prod]
-64.137.181.175 ansible_user=ratox
+marighella.io ansible_user=ratox marighella_server_name=marighella.io
