@@ -1,0 +1,49 @@
+---
+- hosts: all
+  become: yes
+  become_user: ratox
+  vars_files:
+  - ../files/vars.yml
+  - ../files/env.yml
+  vars:
+  - service_dir: ~/authentication-service
+  tasks:
+
+  - name: checkout git project
+    git: repo='{{ item.git_url }}' dest='{{ service_dir }}' force=yes version=master
+    with_items:
+      - { git_url: 'https://github.com/marighella/authentication' }
+
+  - name: run npm install to dev
+    command: npm install --no-optional
+    args:
+        chdir: "{{ service_dir }}"
+    when: "'dev' in group_names"
+
+  - name: run npm install to production
+    npm: path={{ service_dir }} production=yes
+    when: "'dev' not in group_names"
+
+  - name: "Check list of Node.js apps running."
+    command: forever list
+    register: forever_list
+    changed_when: false
+
+  - name: Ensure log folder exists
+    become: yes
+    become_user: root
+    file:
+      path: /var/log/forever
+      state: directory
+      owner: www-data
+      group: www-data
+      mode: u=rwX,g=rwX,o=r
+
+  - name: "Start file-service.js app."
+    command: forever start -a -l /var/log/forever/authentication.log -w --watchDirectory "{{ service_dir }}" "{{ service_dir }}/start.js"
+    environment:
+      GITHUB_CLIENT_ID: "{{ dev.github_client_id }}"
+      GITHUB_SECRET_KEY: "{{ dev.github_client_secret }}"
+      SECRET_JWT: "{{ dev.secret_jwt }}"
+      AUTHENTICATION_APP_PORT: "{{ authentication_app_port }}"
+    when: "forever_list.stdout.find('{{ service_dir }}/start.js') == -1"

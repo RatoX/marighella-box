@@ -12,3 +12,6 @@ nginx:
 
 security:
 	ansible-playbook -i $(ENVIRONMENT) security.yml --vault-password-file=~/.ssh/vault_password_file
+
+auth:
+	ansible-playbook -i $(ENVIRONMENT) applications/auth.yml --vault-password-file=~/.ssh/vault_password_file

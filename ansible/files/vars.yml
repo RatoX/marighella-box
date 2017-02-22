@@ -13,3 +13,4 @@ python_packages:
   - pyasn1
 nodejs_version: "6.x"
 python_versions: [2.7]
+authentication_app_port: 7000
