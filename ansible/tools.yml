@@ -49,10 +49,10 @@
   become: yes
   tasks:
   - name: "Install forever (to run Node.js app)."
-    npm: name=forever global=yes state=present
+    npm: name=forever global=yes state=latest
 
   - name: Install Bower and Grunt
-    npm: name={{ item }} state=present global=yes
+    npm: name={{ item }} state=latest global=yes
     with_items:
     - bower
     - grunt
