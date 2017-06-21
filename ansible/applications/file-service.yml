@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: yes
+  become_user: ratox
+  vars:
+  - file_service_dir: ~/file-service
+  tasks:
+
+  - name: checkout git project
+    git: repo='{{ item.git_url }}' dest='{{ file_service_dir }}' force=yes version=node
+    with_items:
+      - { git_url: 'https://github.com/marighella/file-service' }
+
+  - name: run npm install to dev
+    command: npm install --no-optional
+    args:
+        chdir: "{{ file_service_dir }}"
+    when: "'dev' in group_names"
+
+  - name: run npm install to production
+    npm: path={{ file_service_dir }} production=yes
+    when: "'dev' not in group_names"
+
+  - name: "Check list of Node.js apps running."
+    command: forever list
+    register: forever_list
+    changed_when: false
+
+  - name: "Start file-service.js app."
+    command: forever start -w --watchDirectory "{{ file_service_dir }}" "{{ file_service_dir }}/index.js"
+    when: "forever_list.stdout.find('{{ file_service_dir }}/index.js') == -1"

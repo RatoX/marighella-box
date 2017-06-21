@@ -15,3 +15,6 @@ security:
 
 auth:
 	ansible-playbook -i $(ENVIRONMENT) applications/auth.yml --vault-password-file=~/.ssh/vault_password_file
+
+api:
+	ansible-playbook -i $(ENVIRONMENT) applications/api.yml --vault-password-file=~/.ssh/vault_password_file

@@ -53,3 +53,7 @@
          - location /auth {
              proxy_pass http://localhost:{{ authentication_app_port }}/;
            }
+         - location /api {
+             proxy_pass http://localhost:{{ api_app_port }}/api;
+             proxy_pass_request_headers on;
+           }

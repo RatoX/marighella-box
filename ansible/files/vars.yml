@@ -14,3 +14,4 @@ python_packages:
 nodejs_version: "6.x"
 python_versions: [2.7]
 authentication_app_port: 7000
+api_app_port: 8000
