@@ -48,12 +48,29 @@
 - hosts: all
   become: yes
   tasks:
-  - name: "Install forever (to run Node.js app)."
-    npm: name=forever global=yes state=latest
+  - name: Set permissions to node modules to ratox
+    file:
+      path: /home/ratox/.npm-global
+      state: directory
+      owner: ratox
+      group: www-data
+      mode: u=rwX,g=rw,o=r
+  - name: Change npm global prefix
+    command: npm config set prefix '/home/ratox/.npm-global'
+  - name: Ensure the PATH is in profile file
+    lineinfile:
+      dest: /home/ratox/.profile
+      regexp: '^\.npm-global'
+      line: "export PATH=/home/ratox/.npm-global/bin:$PATH"
 
+- hosts: all
+  become: yes
+  tasks:
   - name: Install Bower and Grunt
-    npm: name={{ item }} state=latest global=yes
+    npm: name={{ item }} state=present global=yes
     with_items:
+    - npm
+    - forever
     - bower
     - grunt
     - grunt-cli

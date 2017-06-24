@@ -6,7 +6,8 @@
   - ../files/vars.yml
   - ../files/env.yml
   vars:
-  - service_dir: ~/authentication-service
+  - service_dir: /home/ratox/authentication-service
+  - log_path: /var/log/forever/authentication.log
   tasks:
 
   - name: checkout git project
@@ -21,13 +22,8 @@
     when: "'dev' in group_names"
 
   - name: run npm install to production
-    npm: path={{ service_dir }} production=yes
+    npm: path={{ service_dir }}
     when: "'dev' not in group_names"
-
-  - name: "Check list of Node.js apps running."
-    command: forever list
-    register: forever_list
-    changed_when: false
 
   - name: Ensure log folder exists
     become: yes
@@ -39,11 +35,20 @@
       group: www-data
       mode: u=rwX,g=rwX,o=r
 
-  - name: "Start file-service.js app."
-    command: forever start -a -l /var/log/forever/authentication.log -w --watchDirectory "{{ service_dir }}" "{{ service_dir }}/start.js"
+  - name: "Check list of Node.js apps running."
+    command: forever list
+    register: forever_list
+    become: ratox
+    changed_when: false
     environment:
-      GITHUB_CLIENT_ID: "{{ dev.github_client_id }}"
-      GITHUB_SECRET_KEY: "{{ dev.github_client_secret }}"
-      SECRET_JWT: "{{ dev.secret_jwt }}"
+      PATH: /home/ratox/.npm-global/bin:{{ ansible_env.PATH }}
+
+  - name: "Start file-service.js app."
+    become: ratox
+    command: forever start -a -l {{ log_path }} -w --watchDirectory "{{ service_dir }}" "{{ service_dir }}/start.js"
+    environment:
+      GITHUB_CLIENT_ID: "{{ stage.github_client_id }}"
+      GITHUB_SECRET_KEY: "{{ stage.github_client_secret }}"
+      SECRET_JWT: "{{ stage.secret_jwt }}"
       API_APP_PORT: "{{ api_app_port }}"
     when: "forever_list.stdout.find('{{ service_dir }}/start.js') == -1"
